@@ -21,29 +21,53 @@ numberButtons.forEach((button) => {
   });
 });
 
-operatorButtons.forEach((button) =>{
-    button.addEventListener('click', ()=>{
-        operator = button.textContent;
-    })
-})
+operatorButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    operator = button.textContent;
+  });
+});
 
-function add (num1, num2){
-    return num1 + num2;
+function choseOperation(operator, num1, num2) {
+  switch (operator) {
+    case "+":
+      return add(num1, num2);
+      break;
+    case "-":
+      return substract(num1, num2);
+      break;
+    case "X":
+      return multiply(num1, num2);
+      break;
+    case "/":
+      return divide(num1, num2);
+      break;
+    case "%":
+      return percentage(num1, num2);
+      break;
+    default:
+      return 0;
+      console.log("No reconzco esta opcion");
+      break;
+  }
 }
 
-function substract (num1, num2){
-    return num1 - num2;
+function add(num1, num2) {
+  return num1 + num2;
 }
 
-function multiply (num1, num2){
-    return num1 * num2;
+function substract(num1, num2) {
+  return num1 - num2;
 }
 
-function divide (num1, num2){
-    return num1 / num2;
+function multiply(num1, num2) {
+  return num1 * num2;
 }
 
-function percentage (num1, num2){
-    num1 = num1/100;
-    return num1 * num2;
+function divide(num1, num2) {
+  return num1 / num2;
+}
+
+function percentage(num1, num2) {
+  num1 = num1 / 100;
+  return num1 * num2;
 }
