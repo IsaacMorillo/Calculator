@@ -24,12 +24,12 @@
 }
 
 .container-calculator div {
+  background-color: var(--background-color);
   width: 100%;
   padding: 10px;
 }
 
 .title-container {
-  background-color: var(--background-color);
   color: aliceblue;
 }
 
@@ -40,9 +40,16 @@ h1 {
 
 .screen {
   height: 80px;
-  background-color: var(--screen-color);
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.screen div{
+    width: 95%;
+    height: 95%;
+    border: 1px solid var(--botton-color);
+    margin: auto;
+    background-color: var(--screen-color);
 }
 
 .button-container {
@@ -74,9 +81,6 @@ h1 {
   background-color: var(--botton-color);
 }
 
-button:active{
-    filter: brightness(50%)
+button:active {
+  filter: brightness(50%);
 }
-
-
-
