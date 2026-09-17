@@ -7,21 +7,21 @@ const answer = document.querySelector(".answer");
 
 let selectedNumbers = [];
 let operator = "";
+let term = 0;
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    if (button.classList.contains("number-button")) {
+      term = term + button.textContent;
+    } else {
+      term = Number.parseFloat(term);
+      selectedNumbers.push(term);
+      term = "";
+    }
     if (button != equalButton) {
       const contentButton = button.textContent;
       screenContainer.textContent += contentButton + " ";
     }
-  });
-});
-
-numberButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const numberSelect = Number.parseInt(button.textContent);
-    selectedNumbers.push(numberSelect);
-    console.log(selectedNumbers);
   });
 });
 
