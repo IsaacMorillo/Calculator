@@ -71,11 +71,11 @@ h1 {
 
 #ac-button {
   background-color: rgb(250, 202, 113);
+  font-weight: bold;
 }
 
 .operation-button {
   background-color: rgb(140, 166, 249);
-  font-weight: bold;
 }
 
 .number-button {
