@@ -2,14 +2,18 @@ const screenContainer = document.querySelector(".operation");
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".number-button");
 const operatorButtons = document.querySelectorAll(".operation-button");
+const equalButton = document.querySelector("#equal-button");
+const answer = document.querySelector(".answer");
 
 let selectedNumbers = [];
 let operator = "";
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
-    const contentButton = button.textContent;
-    screenContainer.textContent += contentButton + " ";
+    if (button != equalButton) {
+      const contentButton = button.textContent;
+      screenContainer.textContent += contentButton + " ";
+    }
   });
 });
 
@@ -25,6 +29,12 @@ operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     operator = button.textContent;
   });
+});
+
+equalButton.addEventListener("click", () => {
+  let num1 = selectedNumbers[0];
+  let num2 = selectedNumbers[1];
+  answer.textContent = choseOperation(operator, num1, num2);
 });
 
 function choseOperation(operator, num1, num2) {
