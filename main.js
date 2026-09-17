@@ -3,20 +3,24 @@ const buttons = document.querySelectorAll("button");
 const operatorButtons = document.querySelectorAll(".operation-button");
 const equalButton = document.querySelector("#equal-button");
 const answer = document.querySelector(".answer");
-const acButton = document.querySelector('#ac-button');
+const acButton = document.querySelector("#ac-button");
 
 let selectedNumbers = [];
 let operator = "";
-let term = 0;
+let term = "";
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (button.classList.contains("number-button")) {
       term = term + button.textContent;
     } else {
-      term = Number.parseFloat(term);
-      selectedNumbers.push(term);
-      term = "";
+      if (term == "" && button.textContent == "-") {
+        term = term + button.textContent;
+      } else {
+        term = Number.parseFloat(term);
+        selectedNumbers.push(term);
+        term = "";
+      }
     }
     if (button != equalButton) {
       const contentButton = button.textContent;
@@ -37,12 +41,12 @@ equalButton.addEventListener("click", () => {
   answer.textContent = choseOperation(operator, num1, num2);
 });
 
-acButton.addEventListener('click' , () => {
+acButton.addEventListener("click", () => {
   selectedNumbers = [];
-  operator = '';
-  screenContainer.textContent = '';
-  answer.textContent = '';
-})
+  operator = "";
+  screenContainer.textContent = "";
+  answer.textContent = "";
+});
 
 function choseOperation(operator, num1, num2) {
   switch (operator) {
@@ -60,6 +64,8 @@ function choseOperation(operator, num1, num2) {
       break;
     case "%":
       return percentage(num1, num2);
+      break;
+    case "":
       break;
     default:
       return "ERROR";
