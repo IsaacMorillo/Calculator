@@ -1,9 +1,11 @@
-const screenContainer = document.querySelector('.screen-container');
-const buttons = document.querySelectorAll('button');
+const screenContainer = document.querySelector(".operation");
+const buttons = document.querySelectorAll("button");
 
-buttons.forEach(button =>{
-    button.addEventListener('click', ()=>{
-        const contentButton = button.textContent;
-        screenContainer.textContent += contentButton;
-    })
-})
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const contentButton = button.textContent;
+    screenContainer.textContent += contentButton + " ";
+  });
+});
+
+

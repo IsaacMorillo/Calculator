@@ -44,12 +44,13 @@ h1 {
   border-bottom: 1px solid black;
 }
 
-.screen div{
-    width: 95%;
-    height: 95%;
-    border: 1px solid var(--botton-color);
-    margin: auto;
-    background-color: var(--screen-color);
+.screen div {
+  width: 95%;
+  height: 95%;
+  border: 1px solid var(--botton-color);
+  margin: auto;
+  padding: 0;
+  background-color: var(--screen-color);
 }
 
 .button-container {
@@ -83,4 +84,17 @@ h1 {
 
 button:active {
   filter: brightness(50%);
+}
+
+.operation {
+  font-size: 1.2rem;
+  margin: 5px 10px;
+  min-height: 15px;
+}
+
+.answer {
+  font-size: 1.8rem;
+  margin: 5px;
+  text-align: end;
+  font-weight: bold;
 }
