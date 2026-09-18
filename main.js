@@ -8,6 +8,7 @@ const acButton = document.querySelector("#ac-button");
 let selectedNumbers = [];
 let operator = "";
 let term = "";
+let result = 0;
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -36,9 +37,14 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener("click", () => {
-  let num1 = selectedNumbers[0];
-  let num2 = selectedNumbers[1];
-  answer.textContent = choseOperation(operator, num1, num2);
+  if (selectedNumbers.length == 1) {
+    result = selectedNumbers[0];
+  } else {
+    let num1 = selectedNumbers[0];
+    let num2 = selectedNumbers[1];
+    result = choseOperation(operator, num1, num2);
+  }
+  answer.textContent = result;
 });
 
 acButton.addEventListener("click", () => {
