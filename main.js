@@ -8,19 +8,22 @@ const acButton = document.querySelector("#ac-button");
 let selectedNumbers = [];
 let operator = "";
 let term = "";
-let result = 0;
+let result;
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (button.classList.contains("number-button")) {
       term = term + button.textContent;
     } else {
-      if (term == "" && button.textContent == "-") {
+      if (term == "" && button.textContent == "-" && !Number.isFinite(result)) {
         term = term + button.textContent;
       } else {
-        term = Number.parseFloat(term);
-        selectedNumbers.push(term);
-        term = "";
+        if (term != "") {
+          term = Number.parseFloat(term);
+          selectedNumbers.push(term);
+          console.log(selectedNumbers);
+          term = "";
+        }
       }
     }
     if (button != equalButton) {
@@ -33,6 +36,7 @@ buttons.forEach((button) => {
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     operator = button.textContent;
+    console.log(operator);
   });
 });
 
@@ -44,6 +48,10 @@ equalButton.addEventListener("click", () => {
     let num2 = selectedNumbers[1];
     result = choseOperation(operator, num1, num2);
   }
+  console.log(result);
+  selectedNumbers = [];
+  selectedNumbers.push(result);
+  console.log(selectedNumbers);
   answer.textContent = result;
 });
 
