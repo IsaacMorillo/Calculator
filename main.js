@@ -20,19 +20,14 @@ buttons.forEach((button) => {
       }
       if (button.classList.contains("number-button")) {
         selectedNumbers = [];
-        term +=  button.textContent;
+        term += button.textContent;
         screenContainer.textContent = button.textContent;
-
       }
     } else {
       if (button.classList.contains("number-button")) {
         term = term + button.textContent;
       } else {
-        if (
-          term == "" &&
-          button.textContent == "-" &&
-          !Number.isFinite(result)
-        ) {
+        if (term == "" && button.textContent == "-") {
           term = term + button.textContent;
         } else {
           if (term != "") {
@@ -47,14 +42,19 @@ buttons.forEach((button) => {
         screenContainer.textContent += contentButton + " ";
       }
     }
-
     isClickEqual = false;
   });
 });
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    operator = button.textContent;
+    if ((operator == "X" && button.textContent == "-")) {
+      operator = "X";
+    } else if (operator == "/" && button.textContent == "-") {
+      operator = "/";
+    } else {
+      operator = button.textContent;
+    }
   });
 });
 
@@ -83,15 +83,19 @@ acButton.addEventListener("click", () => {
 function choseOperation(operator, num1, num2) {
   switch (operator) {
     case "+":
+      console.log("se llama add");
       return add(num1, num2);
       break;
     case "-":
+      console.log("se llama resta");
       return substract(num1, num2);
       break;
     case "X":
+      console.log("se llama multiplic");
       return multiply(num1, num2);
       break;
     case "/":
+      console.log("se llama divide");
       return divide(num1, num2);
       break;
     case "%":
