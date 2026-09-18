@@ -9,34 +9,52 @@ let selectedNumbers = [];
 let operator = "";
 let term = "";
 let result;
+let isClickEqual = false;
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
-    if (button.classList.contains("number-button")) {
-      term = term + button.textContent;
+    if (isClickEqual === true) {
+      if (button.classList.contains("operation-button")) {
+        screenContainer.textContent = `ANS ${button.textContent}`;
+        operator = button.textContent;
+      }
+      if (button.classList.contains("number-button")) {
+        selectedNumbers = [];
+        term +=  button.textContent;
+        screenContainer.textContent = button.textContent;
+
+      }
     } else {
-      if (term == "" && button.textContent == "-" && !Number.isFinite(result)) {
+      if (button.classList.contains("number-button")) {
         term = term + button.textContent;
       } else {
-        if (term != "") {
-          term = Number.parseFloat(term);
-          selectedNumbers.push(term);
-          console.log(selectedNumbers);
-          term = "";
+        if (
+          term == "" &&
+          button.textContent == "-" &&
+          !Number.isFinite(result)
+        ) {
+          term = term + button.textContent;
+        } else {
+          if (term != "") {
+            term = Number.parseFloat(term);
+            selectedNumbers.push(term);
+            term = "";
+          }
         }
       }
+      if (button != equalButton) {
+        const contentButton = button.textContent;
+        screenContainer.textContent += contentButton + " ";
+      }
     }
-    if (button != equalButton) {
-      const contentButton = button.textContent;
-      screenContainer.textContent += contentButton + " ";
-    }
+
+    isClickEqual = false;
   });
 });
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     operator = button.textContent;
-    console.log(operator);
   });
 });
 
@@ -48,11 +66,11 @@ equalButton.addEventListener("click", () => {
     let num2 = selectedNumbers[1];
     result = choseOperation(operator, num1, num2);
   }
-  console.log(result);
   selectedNumbers = [];
   selectedNumbers.push(result);
-  console.log(selectedNumbers);
   answer.textContent = result;
+  isClickEqual = true;
+  operator = "";
 });
 
 acButton.addEventListener("click", () => {
