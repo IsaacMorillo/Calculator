@@ -8,7 +8,7 @@ const acButton = document.querySelector("#ac-button");
 let selectedNumbers = [];
 let operator = "";
 let term = "";
-let termsList = [];
+let operatorList = [];
 let result;
 let isClickEqual = false;
 
@@ -55,12 +55,14 @@ operatorButtons.forEach((button) => {
       operator = "/";
     } else {
       operator = button.textContent;
+      operatorList.push(operator);
     }
   });
 });
 
 equalButton.addEventListener("click", () => {
-  result = resolveOperation(selectedNumbers);
+  console.log(operatorList);
+  result = resolveOperation(selectedNumbers, operatorList);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
@@ -76,25 +78,19 @@ acButton.addEventListener("click", () => {
 function choseOperation(operator, num1, num2) {
   switch (operator) {
     case "+":
-      console.log("se llama add");
       return add(num1, num2);
       break;
     case "-":
-      console.log("se llama resta");
       return substract(num1, num2);
       break;
     case "X":
-      console.log("se llama multiplic");
       return multiply(num1, num2);
       break;
     case "/":
-      console.log("se llama divide");
       return divide(num1, num2);
       break;
     case "%":
       return percentage(num1, num2);
-      break;
-    case "":
       break;
     default:
       return "ERROR";
@@ -127,18 +123,16 @@ function percentage(num1, num2) {
   return num1 * num2;
 }
 
-function resolveOperation(arr) {
+function resolveOperation(arrNum, arrOperators) {
   let result = 0;
   do {
-    if (arr.length == 1) {
-      result =  arr[0];
+    if (arrNum.length == 1) {
+      result = arrNum[0];
     } else {
-      result = choseOperation(operator, arr[0], arr[1]);
+      result = choseOperation(arrOperators[0], arrNum[0], arrNum[1]);
     }
-    arr.splice(0,2, result);
-    console.log(arr);
-  } while (arr.length > 1);
+    arrNum.splice(0, 2, result);
+    arrOperators.splice(0,1);
+  } while (arrNum.length > 1);
   return result;
 }
-
-
