@@ -61,7 +61,6 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener("click", () => {
-  console.log(operatorList);
   result = resolveOperation(selectedNumbers, operatorList);
   answer.textContent = result;
   isClickEqual = true;
@@ -126,14 +125,18 @@ function percentage(num1, num2) {
 function resolveOperation(arrNum, arrOperators) {
   let result = 0;
   do {
-    console.log(determineNextOperator(arrNum, arrOperators));
+    let nextOperator = determineNextOperator(arrNum, arrOperators);
     if (arrNum.length == 1) {
       result = arrNum[0];
     } else {
-      result = choseOperation(arrOperators[0], arrNum[0], arrNum[1]);
+      result = choseOperation(
+        arrOperators[nextOperator],
+        arrNum[nextOperator],
+        arrNum[nextOperator + 1],
+      );
     }
-    arrNum.splice(0, 2, result);
-    arrOperators.splice(0, 1);
+    arrNum.splice(nextOperator, 2, result);
+    arrOperators.splice(nextOperator, 1);
   } while (arrNum.length > 1);
   return result;
 }
