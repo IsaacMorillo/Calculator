@@ -126,13 +126,38 @@ function percentage(num1, num2) {
 function resolveOperation(arrNum, arrOperators) {
   let result = 0;
   do {
+    console.log(determineNextOperator(arrNum, arrOperators));
     if (arrNum.length == 1) {
       result = arrNum[0];
     } else {
       result = choseOperation(arrOperators[0], arrNum[0], arrNum[1]);
     }
     arrNum.splice(0, 2, result);
-    arrOperators.splice(0,1);
+    arrOperators.splice(0, 1);
   } while (arrNum.length > 1);
   return result;
+}
+
+function determineNextOperator(arrNum, arrOperators) {
+  let isExistOperatorMul = isExistOperator(arrOperators, "X");
+  let isExistOperatorDiv = isExistOperator(arrOperators, "/");
+  if (isExistOperatorDiv && isExistOperatorMul) {
+    return arrOperators.indexOf("X") < arrOperators.indexOf("/")
+      ? arrOperators.indexOf("X")
+      : arrOperators.indexOf("/");
+  }
+  if (isExistOperatorDiv) {
+    return arrOperators.indexOf("/");
+  }
+  if (isExistOperatorMul) {
+    return arrOperators.indexOf("X");
+  }
+  return 0;
+}
+
+function isExistOperator(arrOperators, operator) {
+  if (arrOperators.includes(operator)) {
+    return true;
+  }
+  return false;
 }
