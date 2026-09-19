@@ -54,14 +54,16 @@ operatorButtons.forEach((button) => {
     } else if (operator == "/" && button.textContent == "-") {
       operator = "/";
     } else {
+      //if (!button.classList.contains("parentheses")) {
       operator = button.textContent;
+      // }*/
       operatorList.push(operator);
     }
   });
 });
 
 equalButton.addEventListener("click", () => {
-  result = resolveOperation(selectedNumbers, operatorList);
+  result = resolveOperationComplete(selectedNumbers, operatorList);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
@@ -90,6 +92,10 @@ function choseOperation(operator, num1, num2) {
       break;
     case "%":
       return percentage(num1, num2);
+      break;
+    case "(":
+      break;
+    case ")":
       break;
     default:
       return "ERROR";
@@ -139,6 +145,39 @@ function resolveOperation(arrNum, arrOperators) {
     arrOperators.splice(nextOperator, 1);
   } while (arrNum.length > 1);
   return result;
+}
+
+function resolveOperationComplete(arrNum, arrOperators) {
+  if (arrOperators.includes("(")) {
+    if (!arrOperators.includes(")")) {
+      return "ERROR";
+    }
+    let indexOpenParenthesis = arrOperators.lastIndexOf("(");
+    let indexCloseParenthesis = arrOperators.indexOf(")", indexOpenParenthesis);
+
+    let elementBetweenParenthesis =
+      indexCloseParenthesis - indexOpenParenthesis + 1;
+
+    let newArrOperators = arrOperators.slice(
+      indexOpenParenthesis + 1,
+      indexCloseParenthesis,
+    );
+    let newArrNumbers = arrNum.slice(
+      indexOpenParenthesis,
+      indexCloseParenthesis,
+    );
+
+    let resultad = resolveOperation(newArrNumbers, newArrOperators);
+    arrNum.splice(indexOpenParenthesis, elementBetweenParenthesis-1, resultad);
+    arrOperators.splice(indexOpenParenthesis, elementBetweenParenthesis);
+    console.log("ya operado");
+    console.log(arrNum);
+    console.log(newArrNumbers);
+    console.log(arrOperators);
+    console.log(newArrOperators);
+    //return resolveOperation(newArrNumbers, newArrOperators);
+  }
+  //return resolveOperation(arrNum, arrOperators);
 }
 
 function determineNextOperator(arrNum, arrOperators) {
