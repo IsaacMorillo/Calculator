@@ -8,6 +8,7 @@ const acButton = document.querySelector("#ac-button");
 let selectedNumbers = [];
 let operator = "";
 let term = "";
+let termsList = [];
 let result;
 let isClickEqual = false;
 
@@ -48,7 +49,7 @@ buttons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    if ((operator == "X" && button.textContent == "-")) {
+    if (operator == "X" && button.textContent == "-") {
       operator = "X";
     } else if (operator == "/" && button.textContent == "-") {
       operator = "/";
@@ -59,15 +60,7 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener("click", () => {
-  if (selectedNumbers.length == 1) {
-    result = selectedNumbers[0];
-  } else {
-    let num1 = selectedNumbers[0];
-    let num2 = selectedNumbers[1];
-    result = choseOperation(operator, num1, num2);
-  }
-  selectedNumbers = [];
-  selectedNumbers.push(result);
+  result = resolveOperation(selectedNumbers);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
@@ -133,3 +126,19 @@ function percentage(num1, num2) {
   num1 = num1 / 100;
   return num1 * num2;
 }
+
+function resolveOperation(arr) {
+  let result = 0;
+  do {
+    if (arr.length == 1) {
+      result =  arr[0];
+    } else {
+      result = choseOperation(operator, arr[0], arr[1]);
+    }
+    arr.splice(0,2, result);
+    console.log(arr);
+  } while (arr.length > 1);
+  return result;
+}
+
+
