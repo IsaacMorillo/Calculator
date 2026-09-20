@@ -6,10 +6,8 @@ const answer = document.querySelector(".answer");
 const acButton = document.querySelector("#ac-button");
 
 let operationComplete = [];
-let selectedNumbers = [];
 let operator = "";
 let term = "";
-let operatorList = [];
 let result;
 let isClickEqual = false;
 
@@ -22,7 +20,6 @@ buttons.forEach((button) => {
         operator = button.textContent;
       }
       if (button.classList.contains("number-button")) {
-        selectedNumbers = [];
         term += button.textContent;
         screenContainer.textContent = button.textContent;
       }
@@ -35,7 +32,12 @@ buttons.forEach((button) => {
         } else {
           if (term != "") {
             term = Number.parseFloat(term);
-            selectedNumbers.push(term);
+            if (
+              operationComplete[operationComplete.length - 1] == "-" &&
+              term < 0
+            ) {
+              term *= -1;
+            }
             operationComplete.push(term);
             term = "";
           }
@@ -58,7 +60,6 @@ operatorButtons.forEach((button) => {
       operator = "/";
     } else {
       operator = button.textContent;
-      operatorList.push(operator);
       operationComplete.push(operator);
     }
   });
@@ -66,11 +67,7 @@ operatorButtons.forEach((button) => {
 
 equalButton.addEventListener("click", () => {
   console.log(operationComplete);
-  result = resolveOperationComplete(
-    operationComplete,
-    selectedNumbers,
-    operatorList,
-  );
+  result = resolveOperationComplete(operationComplete);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
@@ -78,11 +75,10 @@ equalButton.addEventListener("click", () => {
 });
 
 acButton.addEventListener("click", () => {
-  selectedNumbers = [];
-  operationComplete = [];
   operator = "";
   screenContainer.textContent = "";
   answer.textContent = "";
+  operationComplete = [];
 });
 
 function choseOperation(operator, num1, num2) {
@@ -144,7 +140,7 @@ function resolveOperation(arrNum, arrOperators) {
     if (arrNum.length == 1) {
       result = arrNum[0];
     } else {
-     /* console.log(
+      /* console.log(
         `${arrNum[nextOperator]} ${arrOperators[nextOperator]} ${arrNum[nextOperator + 1]}`,
       );*/
       result = choseOperation(
@@ -159,7 +155,9 @@ function resolveOperation(arrNum, arrOperators) {
   return result;
 }
 
-function resolveOperationComplete(arrComplet, arrNum, arrOperators) {
+function resolveOperationComplete(arrComplet) {
+  let tempNum = [];
+  let tempOperators = [];
   if (arrComplet.includes("(")) {
     if (!arrComplet.includes(")")) {
       return "ERROR";
@@ -169,8 +167,6 @@ function resolveOperationComplete(arrComplet, arrNum, arrOperators) {
     let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
     let elementBetweenParenthesis =
       indexCloseParenthesis - indexOpenParenthesis + 1;
-    let tempNum = [];
-    let tempOperators = [];
     for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
       if (Number.isFinite(arrComplet[i])) {
         tempNum.push(arrComplet[i]);
@@ -180,11 +176,16 @@ function resolveOperationComplete(arrComplet, arrNum, arrOperators) {
     }
     let result = resolveOperation(tempNum, tempOperators);
     arrComplet.splice(indexOpenParenthesis, elementBetweenParenthesis, result);
-    console.log(arrComplet);
-    console.log('eliminado primea cez');
-    return resolveOperationComplete(arrComplet, arrNum, arrOperators);
+    return resolveOperationComplete(arrComplet);
   } else {
-    return resolveOperation(arrNum, arrOperators);
+    for (let i = 0; i < arrComplet.length; i++) {
+      if (Number.isFinite(arrComplet[i])) {
+        tempNum.push(arrComplet[i]);
+      } else {
+        tempOperators.push(arrComplet[i]);
+      }
+    }
+    return resolveOperation(tempNum, tempOperators);
   }
 }
 
