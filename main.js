@@ -133,7 +133,7 @@ function percentage(num1, num2) {
   return num1 * num2;
 }
 
-function resolveOperation(arrNum, arrOperators) {
+function resolveOperationBasic(arrNum, arrOperators) {
   let result = 0;
   do {
     let nextOperator = determineNextOperator(arrNum, arrOperators);
@@ -165,14 +165,8 @@ function resolveOperationComplete(arrComplet) {
       for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
         classifyNumberOrOperator(arrComplet[i], tempNum, tempOperators);
       }
-      if (
-        tempNum.length == 1 &&
-        tempOperators[0] == "-" &&
-        tempOperators.length == 1
-      ) {
-        tempNum[0] *= -1;
-      }
-      let result = resolveOperation(tempNum, tempOperators);
+      transformNegativeNumber(tempNum, tempOperators);
+      let result = resolveOperationBasic(tempNum, tempOperators);
       arrComplet.splice(
         indexOpenParenthesis,
         elementBetweenParenthesis,
@@ -183,7 +177,7 @@ function resolveOperationComplete(arrComplet) {
       for (let i = 0; i < arrComplet.length; i++) {
         classifyNumberOrOperator(arrComplet[i], tempNum, tempOperators);
       }
-      return resolveOperation(tempNum, tempOperators);
+      return resolveOperationBasic(tempNum, tempOperators);
     }
   } else {
     return validateExpression(arrComplet);
@@ -249,5 +243,15 @@ function classifyNumberOrOperator(char, arrNumbers, arrOperators) {
     arrNumbers.push(char);
   } else {
     arrOperators.push(char);
+  }
+}
+
+function transformNegativeNumber(arrNumbers, arrOperators) {
+  if (
+    arrNumbers.length == 1 &&
+    arrOperators[0] == "-" &&
+    arrOperators.length == 1
+  ) {
+    arrNumbers[0] *= -1;
   }
 }
