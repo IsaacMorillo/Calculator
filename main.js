@@ -156,20 +156,20 @@ function resolveOperationComplete(arrComplet) {
   let tempNum = [];
   let tempOperators = [];
   if (validateExpression(arrComplet) === true) {
-   arrComplet = addImplicitMultiplication(arrComplet);
+    arrComplet = addImplicitMultiplication(arrComplet);
     if (arrComplet.includes("(")) {
       let indexOpenParenthesis = arrComplet.lastIndexOf("(");
       let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
       let elementBetweenParenthesis =
         indexCloseParenthesis - indexOpenParenthesis + 1;
       for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
-        if (Number.isFinite(arrComplet[i])) {
-          tempNum.push(arrComplet[i]);
-        } else {
-          tempOperators.push(arrComplet[i]);
-        }
+        classifyNumberOrOperator(arrComplet[i], tempNum, tempOperators);
       }
-      if(tempNum.length == 1 && tempOperators[0]=='-' && tempOperators.length==1){
+      if (
+        tempNum.length == 1 &&
+        tempOperators[0] == "-" &&
+        tempOperators.length == 1
+      ) {
         tempNum[0] *= -1;
       }
       let result = resolveOperation(tempNum, tempOperators);
@@ -181,11 +181,7 @@ function resolveOperationComplete(arrComplet) {
       return resolveOperationComplete(arrComplet);
     } else {
       for (let i = 0; i < arrComplet.length; i++) {
-        if (Number.isFinite(arrComplet[i])) {
-          tempNum.push(arrComplet[i]);
-        } else {
-          tempOperators.push(arrComplet[i]);
-        }
+        classifyNumberOrOperator(arrComplet[i], tempNum, tempOperators);
       }
       return resolveOperation(tempNum, tempOperators);
     }
@@ -246,4 +242,12 @@ function addImplicitMultiplication(arrComplet) {
     }
   }
   return tempArr;
+}
+
+function classifyNumberOrOperator(char, arrNumbers, arrOperators) {
+  if (Number.isFinite(char)) {
+    arrNumbers.push(char);
+  } else {
+    arrOperators.push(char);
+  }
 }
