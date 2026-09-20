@@ -169,6 +169,9 @@ function resolveOperationComplete(arrComplet) {
           tempOperators.push(arrComplet[i]);
         }
       }
+      if(tempNum.length == 1 && tempOperators[0]=='-' && tempOperators.length==1){
+        tempNum[0] *= -1;
+      }
       let result = resolveOperation(tempNum, tempOperators);
       arrComplet.splice(
         indexOpenParenthesis,
