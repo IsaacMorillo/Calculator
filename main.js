@@ -158,11 +158,16 @@ function resolveOperation(arrNum, arrOperators) {
 function resolveOperationComplete(arrComplet) {
   let tempNum = [];
   let tempOperators = [];
+  let numParenthesisOpen = arrComplet.filter((element) => {
+    return element == "(";
+  }).length;
+  let numParenthesisClose = arrComplet.filter((element) => {
+    return element == ")";
+  }).length;
+  if(numParenthesisOpen !== numParenthesisClose){
+    return 'ERROR';
+  }
   if (arrComplet.includes("(")) {
-    if (!arrComplet.includes(")")) {
-      return "ERROR";
-    }
-
     let indexOpenParenthesis = arrComplet.lastIndexOf("(");
     let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
     let elementBetweenParenthesis =
