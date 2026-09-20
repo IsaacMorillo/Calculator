@@ -156,52 +156,51 @@ function resolveOperationComplete(arrComplet) {
   let tempNum = [];
   let tempOperators = [];
   let tempArr = [];
-  let numParenthesisOpen = arrComplet.filter((element) => {
-    return element == "(";
-  }).length;
-  let numParenthesisClose = arrComplet.filter((element) => {
-    return element == ")";
-  }).length;
-  if (numParenthesisOpen !== numParenthesisClose) {
-    return "ERROR";
-  }
-  for (let i = 0; i < arrComplet.length; i++) {
-    if (
-      arrComplet[i] == "(" &&
-      (Number.isFinite(arrComplet[i - 1]) || arrComplet[i - 1] == ")")
-    ) {
-      tempArr.push("X", arrComplet[i]);
-    } else if (arrComplet[i] == ")" && Number.isFinite(arrComplet[i + 1])) {
-      tempArr.push(arrComplet[i], "X");
-    } else {
-      tempArr.push(arrComplet[i]);
-    }
-  }
-  arrComplet = tempArr;
-  if (arrComplet.includes("(")) {
-    let indexOpenParenthesis = arrComplet.lastIndexOf("(");
-    let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
-    let elementBetweenParenthesis =
-      indexCloseParenthesis - indexOpenParenthesis + 1;
-    for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
-      if (Number.isFinite(arrComplet[i])) {
-        tempNum.push(arrComplet[i]);
-      } else {
-        tempOperators.push(arrComplet[i]);
-      }
-    }
-    let result = resolveOperation(tempNum, tempOperators);
-    arrComplet.splice(indexOpenParenthesis, elementBetweenParenthesis, result);
-    return resolveOperationComplete(arrComplet);
-  } else {
+  if (validateExpresion(arrComplet) === true) {
     for (let i = 0; i < arrComplet.length; i++) {
-      if (Number.isFinite(arrComplet[i])) {
-        tempNum.push(arrComplet[i]);
+      if (
+        arrComplet[i] == "(" &&
+        (Number.isFinite(arrComplet[i - 1]) || arrComplet[i - 1] == ")")
+      ) {
+        tempArr.push("X", arrComplet[i]);
+      } else if (arrComplet[i] == ")" && Number.isFinite(arrComplet[i + 1])) {
+        tempArr.push(arrComplet[i], "X");
       } else {
-        tempOperators.push(arrComplet[i]);
+        tempArr.push(arrComplet[i]);
       }
     }
-    return resolveOperation(tempNum, tempOperators);
+    arrComplet = tempArr;
+    if (arrComplet.includes("(")) {
+      let indexOpenParenthesis = arrComplet.lastIndexOf("(");
+      let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
+      let elementBetweenParenthesis =
+        indexCloseParenthesis - indexOpenParenthesis + 1;
+      for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
+        if (Number.isFinite(arrComplet[i])) {
+          tempNum.push(arrComplet[i]);
+        } else {
+          tempOperators.push(arrComplet[i]);
+        }
+      }
+      let result = resolveOperation(tempNum, tempOperators);
+      arrComplet.splice(
+        indexOpenParenthesis,
+        elementBetweenParenthesis,
+        result,
+      );
+      return resolveOperationComplete(arrComplet);
+    } else {
+      for (let i = 0; i < arrComplet.length; i++) {
+        if (Number.isFinite(arrComplet[i])) {
+          tempNum.push(arrComplet[i]);
+        } else {
+          tempOperators.push(arrComplet[i]);
+        }
+      }
+      return resolveOperation(tempNum, tempOperators);
+    }
+  } else{
+    return validateExpresion(arrComplet);
   }
 }
 
@@ -227,4 +226,17 @@ function isExistOperator(arrOperators, operator) {
     return true;
   }
   return false;
+}
+
+function validateExpresion(arrComplet) {
+  let numParenthesisOpen = arrComplet.filter((element) => {
+    return element == "(";
+  }).length;
+  let numParenthesisClose = arrComplet.filter((element) => {
+    return element == ")";
+  }).length;
+  if (numParenthesisOpen !== numParenthesisClose) {
+    return "ERROR";
+  }
+  return true;
 }
