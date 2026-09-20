@@ -155,21 +155,8 @@ function resolveOperation(arrNum, arrOperators) {
 function resolveOperationComplete(arrComplet) {
   let tempNum = [];
   let tempOperators = [];
-  let tempArr = [];
-  if (validateExpresion(arrComplet) === true) {
-    for (let i = 0; i < arrComplet.length; i++) {
-      if (
-        arrComplet[i] == "(" &&
-        (Number.isFinite(arrComplet[i - 1]) || arrComplet[i - 1] == ")")
-      ) {
-        tempArr.push("X", arrComplet[i]);
-      } else if (arrComplet[i] == ")" && Number.isFinite(arrComplet[i + 1])) {
-        tempArr.push(arrComplet[i], "X");
-      } else {
-        tempArr.push(arrComplet[i]);
-      }
-    }
-    arrComplet = tempArr;
+  if (validateExpression(arrComplet) === true) {
+   arrComplet = addImplicitMultiplication(arrComplet);
     if (arrComplet.includes("(")) {
       let indexOpenParenthesis = arrComplet.lastIndexOf("(");
       let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
@@ -199,8 +186,8 @@ function resolveOperationComplete(arrComplet) {
       }
       return resolveOperation(tempNum, tempOperators);
     }
-  } else{
-    return validateExpresion(arrComplet);
+  } else {
+    return validateExpression(arrComplet);
   }
 }
 
@@ -228,7 +215,7 @@ function isExistOperator(arrOperators, operator) {
   return false;
 }
 
-function validateExpresion(arrComplet) {
+function validateExpression(arrComplet) {
   let numParenthesisOpen = arrComplet.filter((element) => {
     return element == "(";
   }).length;
@@ -239,4 +226,21 @@ function validateExpresion(arrComplet) {
     return "ERROR";
   }
   return true;
+}
+
+function addImplicitMultiplication(arrComplet) {
+  let tempArr = [];
+  for (let i = 0; i < arrComplet.length; i++) {
+    if (
+      arrComplet[i] == "(" &&
+      (Number.isFinite(arrComplet[i - 1]) || arrComplet[i - 1] == ")")
+    ) {
+      tempArr.push("X", arrComplet[i]);
+    } else if (arrComplet[i] == ")" && Number.isFinite(arrComplet[i + 1])) {
+      tempArr.push(arrComplet[i], "X");
+    } else {
+      tempArr.push(arrComplet[i]);
+    }
+  }
+  return tempArr;
 }
