@@ -5,6 +5,7 @@ const equalButton = document.querySelector("#equal-button");
 const answer = document.querySelector(".answer");
 const acButton = document.querySelector("#ac-button");
 
+let operationComplete = [];
 let selectedNumbers = [];
 let operator = "";
 let term = "";
@@ -16,7 +17,8 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (isClickEqual === true) {
       if (button.classList.contains("operation-button")) {
-        screenContainer.textContent = `ANS ${button.textContent}`;
+        screenContainer.textContent = `ANS ${button.textContent} `;
+        operationComplete.push(result);
         operator = button.textContent;
       }
       if (button.classList.contains("number-button")) {
@@ -34,6 +36,7 @@ buttons.forEach((button) => {
           if (term != "") {
             term = Number.parseFloat(term);
             selectedNumbers.push(term);
+            operationComplete.push(term);
             term = "";
           }
         }
@@ -54,23 +57,29 @@ operatorButtons.forEach((button) => {
     } else if (operator == "/" && button.textContent == "-") {
       operator = "/";
     } else {
-      //if (!button.classList.contains("parentheses")) {
       operator = button.textContent;
-      // }*/
       operatorList.push(operator);
+      operationComplete.push(operator);
     }
   });
 });
 
 equalButton.addEventListener("click", () => {
-  result = resolveOperationComplete(selectedNumbers, operatorList);
+  console.log(operationComplete);
+  result = resolveOperationComplete(
+    operationComplete,
+    selectedNumbers,
+    operatorList,
+  );
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
+  operationComplete = [];
 });
 
 acButton.addEventListener("click", () => {
   selectedNumbers = [];
+  operationComplete = [];
   operator = "";
   screenContainer.textContent = "";
   answer.textContent = "";
@@ -135,6 +144,9 @@ function resolveOperation(arrNum, arrOperators) {
     if (arrNum.length == 1) {
       result = arrNum[0];
     } else {
+     /* console.log(
+        `${arrNum[nextOperator]} ${arrOperators[nextOperator]} ${arrNum[nextOperator + 1]}`,
+      );*/
       result = choseOperation(
         arrOperators[nextOperator],
         arrNum[nextOperator],
@@ -147,37 +159,33 @@ function resolveOperation(arrNum, arrOperators) {
   return result;
 }
 
-function resolveOperationComplete(arrNum, arrOperators) {
-  if (arrOperators.includes("(")) {
-    if (!arrOperators.includes(")")) {
+function resolveOperationComplete(arrComplet, arrNum, arrOperators) {
+  if (arrComplet.includes("(")) {
+    if (!arrComplet.includes(")")) {
       return "ERROR";
     }
-    let indexOpenParenthesis = arrOperators.lastIndexOf("(");
-    let indexCloseParenthesis = arrOperators.indexOf(")", indexOpenParenthesis);
 
+    let indexOpenParenthesis = arrComplet.lastIndexOf("(");
+    let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
     let elementBetweenParenthesis =
       indexCloseParenthesis - indexOpenParenthesis + 1;
-
-    let newArrOperators = arrOperators.slice(
-      indexOpenParenthesis + 1,
-      indexCloseParenthesis,
-    );
-    let newArrNumbers = arrNum.slice(
-      indexOpenParenthesis,
-      indexCloseParenthesis,
-    );
-
-    let resultad = resolveOperation(newArrNumbers, newArrOperators);
-    arrNum.splice(indexOpenParenthesis, elementBetweenParenthesis-1, resultad);
-    arrOperators.splice(indexOpenParenthesis, elementBetweenParenthesis);
-    console.log("ya operado");
-    console.log(arrNum);
-    console.log(newArrNumbers);
-    console.log(arrOperators);
-    console.log(newArrOperators);
-    //return resolveOperation(newArrNumbers, newArrOperators);
+    let tempNum = [];
+    let tempOperators = [];
+    for (let i = indexOpenParenthesis + 1; i < indexCloseParenthesis; i++) {
+      if (Number.isFinite(arrComplet[i])) {
+        tempNum.push(arrComplet[i]);
+      } else {
+        tempOperators.push(arrComplet[i]);
+      }
+    }
+    let result = resolveOperation(tempNum, tempOperators);
+    arrComplet.splice(indexOpenParenthesis, elementBetweenParenthesis, result);
+    console.log(arrComplet);
+    console.log('eliminado primea cez');
+    return resolveOperationComplete(arrComplet, arrNum, arrOperators);
+  } else {
+    return resolveOperation(arrNum, arrOperators);
   }
-  //return resolveOperation(arrNum, arrOperators);
 }
 
 function determineNextOperator(arrNum, arrOperators) {
