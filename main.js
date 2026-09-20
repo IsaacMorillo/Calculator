@@ -140,9 +140,6 @@ function resolveOperation(arrNum, arrOperators) {
     if (arrNum.length == 1) {
       result = arrNum[0];
     } else {
-      /* console.log(
-        `${arrNum[nextOperator]} ${arrOperators[nextOperator]} ${arrNum[nextOperator + 1]}`,
-      );*/
       result = choseOperation(
         arrOperators[nextOperator],
         arrNum[nextOperator],
@@ -158,15 +155,29 @@ function resolveOperation(arrNum, arrOperators) {
 function resolveOperationComplete(arrComplet) {
   let tempNum = [];
   let tempOperators = [];
+  let tempArr = [];
   let numParenthesisOpen = arrComplet.filter((element) => {
     return element == "(";
   }).length;
   let numParenthesisClose = arrComplet.filter((element) => {
     return element == ")";
   }).length;
-  if(numParenthesisOpen !== numParenthesisClose){
-    return 'ERROR';
+  if (numParenthesisOpen !== numParenthesisClose) {
+    return "ERROR";
   }
+  for (let i = 0; i < arrComplet.length; i++) {
+    if (
+      arrComplet[i] == "(" &&
+      (Number.isFinite(arrComplet[i - 1]) || arrComplet[i - 1] == ")")
+    ) {
+      tempArr.push("X", arrComplet[i]);
+    } else if (arrComplet[i] == ")" && Number.isFinite(arrComplet[i + 1])) {
+      tempArr.push(arrComplet[i], "X");
+    } else {
+      tempArr.push(arrComplet[i]);
+    }
+  }
+  arrComplet = tempArr;
   if (arrComplet.includes("(")) {
     let indexOpenParenthesis = arrComplet.lastIndexOf("(");
     let indexCloseParenthesis = arrComplet.indexOf(")", indexOpenParenthesis);
