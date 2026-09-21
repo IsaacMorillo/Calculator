@@ -66,12 +66,7 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener("click", () => {
-  console.log(operationComplete);
-  result = resolveOperationComplete(operationComplete);
-  answer.textContent = result;
-  isClickEqual = true;
-  operator = "";
-  operationComplete = [];
+  startCalculation();
 });
 
 acButton.addEventListener("click", () => {
@@ -80,6 +75,14 @@ acButton.addEventListener("click", () => {
   answer.textContent = "";
   operationComplete = [];
 });
+
+function startCalculation() {
+  result = resolveOperationComplete(operationComplete);
+  answer.textContent = result;
+  isClickEqual = true;
+  operator = "";
+  operationComplete = [];
+}
 
 function choseOperation(operator, num1, num2) {
   switch (operator) {
