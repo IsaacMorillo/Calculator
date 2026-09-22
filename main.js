@@ -20,8 +20,8 @@ buttons.forEach((button) => {
         operator = button.textContent;
       }
       if (button.classList.contains("number-button")) {
-       /* screenContainer.textContent = button.textContent + " ";
-        operationComplete.push(button.textContent);*/
+        screenContainer.textContent = button.textContent + " ";
+        operationComplete.push(button.textContent);
       }
     } else {
       if (button.classList.contains("number-button")) {
