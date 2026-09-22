@@ -20,8 +20,8 @@ buttons.forEach((button) => {
         operator = button.textContent;
       }
       if (button.classList.contains("number-button")) {
-        screenContainer.textContent = button.textContent;
-        operationComplete.push(result);
+       /* screenContainer.textContent = button.textContent + " ";
+        operationComplete.push(button.textContent);*/
       }
     } else {
       if (button.classList.contains("number-button")) {
@@ -209,6 +209,17 @@ function determineNumbers(arrComplet) {
         i++;
         continue;
       }
+      if (multiplyOperators(arrComplet[i], arrComplet[i + 1]) == "-") {
+        arrCompletCorrect.push("-");
+        i++;
+        continue;
+      } else if (
+        multiplyOperators(arrComplet[i], arrComplet[i + 1]) == "+"
+      ) {
+        arrCompletCorrect.push("+");
+        i++;
+        continue;
+      }
       arrCompletCorrect.push(arrComplet[i]);
     }
   }
@@ -285,4 +296,17 @@ function transformNegativeNumber(arrNumbers, arrOperators) {
   ) {
     arrNumbers[0] *= -1;
   }
+}
+
+function multiplyOperators (operator1, operator2) {
+  if (
+    (operator1 == "+" && operator2 == "-") ||
+    (operator1 == "-" && operator2 == "+")
+  ) {
+    return "-";
+  }
+  if (operator1 == "-" && operator2 == "-") {
+    return "+";
+  }
+  return "";
 }
