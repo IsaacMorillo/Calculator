@@ -63,8 +63,25 @@ function startCalculation() {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key == "Backspace") {
+  const input = event.key;
+  if (input == "Backspace") {
     deleterChar();
+  }
+  if (
+    Number.isFinite(Number.parseInt(input)) ||
+    input == "." ||
+    input == "+" ||
+    input == "-" ||
+    input == "/" ||
+    input == "(" ||
+    input == ")" ||
+    input == "%"
+  ) {
+    addChar(input);
+  }
+  if (input == '*'){
+      operationComplete.push('X');
+  screenContainer.textContent += 'X' + " ";
   }
 });
 
@@ -74,6 +91,11 @@ function deleterChar() {
     0,
     screenContainer.textContent.length - 2,
   );
+}
+
+function addChar(char) {
+  operationComplete.push(char);
+  screenContainer.textContent += char + " ";
 }
 
 function choseOperation(operator, num1, num2) {
@@ -213,9 +235,7 @@ function determineNumbers(arrComplet) {
         arrCompletCorrect.push("-");
         i++;
         continue;
-      } else if (
-        multiplyOperators(arrComplet[i], arrComplet[i + 1]) == "+"
-      ) {
+      } else if (multiplyOperators(arrComplet[i], arrComplet[i + 1]) == "+") {
         arrCompletCorrect.push("+");
         i++;
         continue;
@@ -298,7 +318,7 @@ function transformNegativeNumber(arrNumbers, arrOperators) {
   }
 }
 
-function multiplyOperators (operator1, operator2) {
+function multiplyOperators(operator1, operator2) {
   if (
     (operator1 == "+" && operator2 == "-") ||
     (operator1 == "-" && operator2 == "+")
