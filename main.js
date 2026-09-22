@@ -52,6 +52,23 @@ buttons.forEach((button) => {
   });
 });
 
+function determineCantDigitsNumber(arrComplet) {
+  let arrCompletCorrect = [];
+  for (let i = 0; i < arrComplet.length; i++) {
+    if (Number.isFinite(Number.parseFloat(arrComplet[i]))) {
+      let transformedNumber = arrComplet[i];
+      do {
+        i++;
+        transformedNumber += arrComplet[i];
+      } while (Number.isFinite(Number.parseFloat(arrComplet[i + 1])));
+      arrCompletCorrect.push(Number.parseFloat(transformedNumber));
+    } else {
+      arrCompletCorrect.push(arr[i]);
+    }
+  }
+  return arrCompletCorrect;
+}
+
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     if (operator == "X" && button.textContent == "-") {
