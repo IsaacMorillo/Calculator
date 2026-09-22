@@ -64,24 +64,23 @@ function startCalculation() {
 
 document.addEventListener("keydown", (event) => {
   const input = event.key;
+  const operators = ["+", "-", "*", "/", "%"];
+  const simbols = [",", ".", "(", ")"];
   if (input == "Backspace") {
     deleterChar();
   }
   if (
     Number.isFinite(Number.parseInt(input)) ||
-    input == "." ||
-    input == "+" ||
-    input == "-" ||
-    input == "/" ||
-    input == "(" ||
-    input == ")" ||
-    input == "%"
+    operators.includes(input) ||
+    simbols.includes(input)
   ) {
-    addChar(input);
-  }
-  if (input == '*'){
-      operationComplete.push('X');
-  screenContainer.textContent += 'X' + " ";
+    if (input == "*") {
+      addChar("X");
+    } else if (input == ",") {
+      addChar(".");
+    } else {
+      addChar(input);
+    }
   }
 });
 
