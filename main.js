@@ -20,31 +20,13 @@ buttons.forEach((button) => {
         operator = button.textContent;
       }
       if (button.classList.contains("number-button")) {
-        /*  term += button.textContent;*/
         screenContainer.textContent = button.textContent;
         operationComplete.push(result);
       }
     } else {
       if (button.classList.contains("number-button")) {
         operationComplete.push(button.textContent);
-        console.log("agregado");
-      } /* else {
-        if (term == "" && button.textContent == "-") {
-          term = term + button.textContent;
-        } else {
-          if (term != "") {
-            term = Number.parseFloat(term);
-            if (
-              operationComplete[operationComplete.length - 1] == "-" &&
-              term < 0
-            ) {
-              term *= -1;
-            }
-            operationComplete.push(term);
-            term = "";
-          }
-        }
-      }*/
+      }
       if (button != equalButton) {
         const contentButton = button.textContent;
         screenContainer.textContent += contentButton + " ";
@@ -56,15 +38,7 @@ buttons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-  /*  if (operator == "X" && button.textContent == "-") {
-      operator = "X";
-    } else if (operator == "/" && button.textContent == "-") {
-      operator = "/";
-    } else {
-      operator = button.textContent;
-      operationComplete.push(operator);
-    }*/
-   operationComplete.push(button.textContent)
+    operationComplete.push(button.textContent);
   });
 });
 
