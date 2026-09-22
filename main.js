@@ -56,18 +56,20 @@ buttons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    if (operator == "X" && button.textContent == "-") {
+  /*  if (operator == "X" && button.textContent == "-") {
       operator = "X";
     } else if (operator == "/" && button.textContent == "-") {
       operator = "/";
     } else {
       operator = button.textContent;
       operationComplete.push(operator);
-    }
+    }*/
+   operationComplete.push(button.textContent)
   });
 });
 
 equalButton.addEventListener("click", () => {
+  console.log(operationComplete);
   startCalculation();
 });
 
@@ -158,7 +160,8 @@ function resolveOperationBasic(arrNum, arrOperators) {
 }
 
 function resolveOperationComplete(arrComplet) {
-  arrComplet = determineCantDigitsNumber(arrComplet);
+  arrComplet = determineNumbers(arrComplet);
+  console.log(arrComplet);
   let tempNum = [];
   let tempOperators = [];
   if (validateExpression(arrComplet) === true) {
@@ -190,7 +193,7 @@ function resolveOperationComplete(arrComplet) {
   }
 }
 
-function determineCantDigitsNumber(arrComplet) {
+function determineNumbers(arrComplet) {
   let arrCompletCorrect = [];
   for (let i = 0; i < arrComplet.length; i++) {
     if (Number.isFinite(Number.parseFloat(arrComplet[i]))) {
@@ -201,6 +204,17 @@ function determineCantDigitsNumber(arrComplet) {
       }
       arrCompletCorrect.push(Number.parseFloat(transformedNumber));
     } else {
+      if (
+        (arrComplet[i] == "-" && i == 0) ||
+        (arrComplet[i] == "-" &&
+          (arrComplet[i - 1] == "X" || arrComplet[i - 1] == "/"))
+      ) {
+        arrCompletCorrect.push(
+          Number.parseFloat(arrComplet[i] + arrComplet[i + 1]),
+        );
+        i++;
+        continue;
+      }
       arrCompletCorrect.push(arrComplet[i]);
     }
   }
