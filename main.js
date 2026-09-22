@@ -170,9 +170,15 @@ function resolveOperationComplete(arrComplet) {
 function determineNumbers(arrComplet) {
   let arrCompletCorrect = [];
   for (let i = 0; i < arrComplet.length; i++) {
-    if (Number.isFinite(Number.parseFloat(arrComplet[i]))) {
+    if (
+      Number.isFinite(Number.parseFloat(arrComplet[i])) ||
+      arrComplet[i] == "."
+    ) {
       let transformedNumber = arrComplet[i];
-      while (Number.isFinite(Number.parseFloat(arrComplet[i + 1]))) {
+      while (
+        Number.isFinite(Number.parseFloat(arrComplet[i + 1])) ||
+        arrComplet[i + 1] == "."
+      ) {
         i++;
         transformedNumber += arrComplet[i];
       }
