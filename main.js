@@ -62,6 +62,20 @@ function startCalculation() {
   operationComplete = [];
 }
 
+document.addEventListener("keydown", (event) => {
+  if (event.key == "Backspace") {
+    deleterChar();
+  }
+});
+
+function deleterChar() {
+  operationComplete.pop();
+  screenContainer.textContent = screenContainer.textContent.slice(
+    0,
+    screenContainer.textContent.length - 2,
+  );
+}
+
 function choseOperation(operator, num1, num2) {
   switch (operator) {
     case "+":
