@@ -55,7 +55,6 @@ acButton.addEventListener("click", () => {
 
 function startCalculation() {
   result = resolveOperationComplete(operationComplete);
-  result = result.toFixed(4);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
@@ -180,7 +179,7 @@ function resolveOperationBasic(arrNum, arrOperators) {
     arrNum.splice(nextOperator, 2, result);
     arrOperators.splice(nextOperator, 1);
   } while (arrNum.length > 1);
-  return result;
+  return parseFloat(result.toFixed(4));
 }
 
 function resolveOperationComplete(arrComplet) {
