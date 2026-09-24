@@ -43,7 +43,6 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener("click", () => {
-  console.log(operationComplete);
   startCalculation();
 });
 
@@ -77,6 +76,14 @@ document.addEventListener("keydown", (event) => {
     if (operators.includes(input) && isClickEqual == true) {
       screenContainer.textContent = `ANS `;
       operationComplete.push(result);
+      isClickEqual = false;
+    } else if (
+      Number.isFinite(Number.parseFloat(input)) &&
+      isClickEqual == true
+    ) {
+      screenContainer.textContent = '';
+      operationComplete = [];
+      isClickEqual = false;
     }
     if (input == "*") {
       addChar("X");
@@ -85,7 +92,6 @@ document.addEventListener("keydown", (event) => {
     } else {
       addChar(input);
     }
-    console.log(operationComplete);
   }
   if (input == "Enter" || input == "=") {
     startCalculation();
@@ -178,7 +184,6 @@ function resolveOperationBasic(arrNum, arrOperators) {
 
 function resolveOperationComplete(arrComplet) {
   arrComplet = determineNumbers(arrComplet);
-  console.log(arrComplet);
   let tempNum = [];
   let tempOperators = [];
   if (validateExpression(arrComplet) === true) {
