@@ -74,6 +74,10 @@ document.addEventListener("keydown", (event) => {
     operators.includes(input) ||
     simbols.includes(input)
   ) {
+    if (operators.includes(input) && isClickEqual == true) {
+      screenContainer.textContent = `ANS `;
+      operationComplete.push(result);
+    }
     if (input == "*") {
       addChar("X");
     } else if (input == ",") {
@@ -81,8 +85,9 @@ document.addEventListener("keydown", (event) => {
     } else {
       addChar(input);
     }
+    console.log(operationComplete);
   }
-  if (input == 'Enter' || input == '='){
+  if (input == "Enter" || input == "=") {
     startCalculation();
   }
 });
