@@ -82,6 +82,9 @@ document.addEventListener("keydown", (event) => {
       addChar(input);
     }
   }
+  if (input == 'Enter' || input == '='){
+    startCalculation();
+  }
 });
 
 function deleterChar() {
