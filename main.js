@@ -55,6 +55,7 @@ acButton.addEventListener("click", () => {
 
 function startCalculation() {
   result = resolveOperationComplete(operationComplete);
+  result = result.toFixed(4);
   answer.textContent = result;
   isClickEqual = true;
   operator = "";
